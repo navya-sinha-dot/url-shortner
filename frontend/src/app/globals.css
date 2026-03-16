@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+}
+
+/* === NEOBRUTALISM BASE === */
+body {
+  font-family: var(--font-sans);
+  background-color: #e0e0e0;
+  background-image:
+    linear-gradient(90deg, rgba(0,0,0,.04) 1px, transparent 1px),
+    linear-gradient(rgba(0,0,0,.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+::selection {
+  background: #fbbf24;
+  color: #000;
+}
+
+/* smooth scrolling */
+html { scroll-behavior: smooth; }
