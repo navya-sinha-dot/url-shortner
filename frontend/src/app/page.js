@@ -108,14 +108,13 @@ export default function Home() {
                   <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" /></svg>
                   Snipping…
                 </span>
-              ) : "Snip it ✂️"}
+              ) : "Snip it"}
             </button>
           </form>
 
-          {/* Error */}
           {error && (
             <div className="mt-5 bg-[#ff4444] text-white font-bold px-5 py-3 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              ⚠️ {error}
+              {error}
             </div>
           )}
 
@@ -165,13 +164,13 @@ export default function Home() {
               disabled={analyticsLoading}
               className="bg-[#fbbf24] text-black font-bold text-lg px-8 py-3 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide"
             >
-              {analyticsLoading ? "Loading…" : "Track 📊"}
+              {analyticsLoading ? "Loading…" : "Track "}
             </button>
           </form>
 
           {analyticsError && (
             <div className="mt-5 bg-[#ff4444] text-white font-bold px-5 py-3 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              ⚠️ {analyticsError}
+              {analyticsError}
             </div>
           )}
 
