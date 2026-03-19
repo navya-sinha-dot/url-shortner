@@ -3,6 +3,16 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const urlRouter = require("./routes/url_routes");
+const rateLimit = require("express-rate-limit");
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: "Too many requests from this IP, please try again after 15 minutes",
+    skip: (req) => {
+        return req.method === "GET" && req.path.match(/^\/url\/[^/]+$/) && !req.path.includes("test");
+    }
+});
 
 dotenv.config();
 
@@ -14,6 +24,7 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.use(express.json());
+app.use(limiter)
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL;

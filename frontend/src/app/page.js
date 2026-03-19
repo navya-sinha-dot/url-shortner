@@ -3,7 +3,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const API_BASE = "https://urlbackend.navyasinha.xyz";
+const API_BASE = "https://urlbackend.navyasinha.xyz" || "http://localhost:3000";
 
 export default function Home() {
   const [url, setUrl] = useState("");

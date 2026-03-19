@@ -1,5 +1,10 @@
 const URL = require("../models/urlmodel");
 const encode = require("../utils/base62logic");
+const { createClient } = require("redis");
+
+const redisClient = createClient();
+redisClient.on("error", (err) => console.error("Redis Client Error", err));
+redisClient.connect().catch(console.error);
 
 async function generateshorturl(req, res) {
     const body = req.body;
@@ -34,6 +39,28 @@ async function redirectURL(req, res) {
 
     const shortId = req.params.shortId;
 
+    //search karo in redis
+    let cached = null;
+    try {
+        cached = await redisClient.get(shortId);
+    } catch (err) {
+        console.error("Redis GET error:", err);
+    }
+
+    if (cached) {
+        URL.findOneAndUpdate(
+            { shortId },
+            {
+                $push: {
+                    visitHistory: { timestamp: Date.now() }
+                }
+            }
+        ).catch(err => console.error("Error updating analytics on cache hit:", err));
+
+        return res.redirect(cached);
+    }
+
+    //if not in redis then search in db and but it in cache
     const entry = await URL.findOneAndUpdate(
         { shortId },
         {
@@ -47,6 +74,14 @@ async function redirectURL(req, res) {
 
     if (!entry) {
         return res.status(404).send("URL not found");
+    }
+
+    try {
+        await redisClient.set(shortId, entry.originalURL, {
+            EX: 3600
+        });
+    } catch (err) {
+        console.error("Redis SET error:", err);
     }
 
     res.redirect(entry.originalURL);
